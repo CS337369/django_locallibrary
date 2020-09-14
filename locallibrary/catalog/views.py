@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from catalog.models import Book, Author, BookInstance, Genre
+from catalog.models import Book, Author, BookInstance, Genre, BookInstanceUpdate
 
 def index(request):
     """View function for home page of site."""
@@ -157,3 +157,24 @@ class BookDelete(PermissionRequiredMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('books')
     permission_required = 'catalog.can_mark_returned'
+
+
+
+class BookInstanceListView(PermissionRequiredMixin, generic.ListView):
+    model = Book
+    paginate_by = 10
+    template_name ='catalog/bookinstancelist_list.html'
+    permission_required = 'catalog.can_mark_returned'
+
+class BookInstanceUpdateView(PermissionRequiredMixin, UpdateView):
+    model = BookInstance
+    fields = '__all__'
+    context_object_name = 'inst'
+    success_url = 'books'
+    permission_required = 'catalog.can_mark_returned'
+    template_name = 'catalog/bookinstance_update.html'
+
+    def get_object(self): 
+        inst = get_object_or_404(Book, pk=self.kwargs['pk'])
+
+        return inst
