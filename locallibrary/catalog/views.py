@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from catalog.models import Book, Author, BookInstance, Genre, BookInstanceUpdate
+from catalog.models import Book, Author, BookInstance, Genre
 
 def index(request):
     """View function for home page of site."""
