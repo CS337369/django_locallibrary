@@ -29,7 +29,7 @@ urlpatterns += [
 
 urlpatterns += [  
     path('book/create/', views.BookCreate.as_view(), name='book_create'),
-    path('book/<int:pk>/update/', views.BookUpdate.as_view(), name='book_update'),
+    path('book/<int:pk>/update/', views.BookUpdate.as_view(), name='book-update'),
     path('book/<int:pk>/delete/', views.BookDelete.as_view(), name='book_delete'),
 ]
 
@@ -37,6 +37,13 @@ urlpatterns += [
 
 
 urlpatterns += [
-    path('bookinstance/list/', views.BookInstanceListView.as_view(), name='book_instance_list'),
-    path('bookinstance/list/<int:pk>/update', views.BookInstanceUpdateView.as_view(), name='book_instance_update'),
+    path('bookupdate/list/', views.BookUpdateListView.as_view(), name='book_update_list'),
+    path('bookupdate/list/<int:pk>/update', views.BookUpdateView.as_view(), name='book_update'),
+]
+
+urlpatterns += [
+    path('bookinstanceupdate/list/',
+          views.BookInstanceListView.as_view(), name='book_instance_list'),
+    path('bookinstanceupdate/list/<uuid:pk>/update',
+          views.BookInstanceUpdateView.as_view(), name='book_instance_update'),
 ]

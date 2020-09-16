@@ -159,22 +159,31 @@ class BookDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'catalog.can_mark_returned'
 
 
+class BookUpdateListView(PermissionRequiredMixin, generic.ListView):
+    model = Book
+    paginate_by = 10
+    template_name ='catalog/bookupdate_list.html'
+    permission_required = 'catalog.can_mark_returned'
+
+class BookUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Book
+    fields = '__all__'
+    permission_required = 'catalog.can_mark_returned'
+    template_name = 'catalog/book_form.html'
 
 class BookInstanceListView(PermissionRequiredMixin, generic.ListView):
-    model = Book
+    model = BookInstance
     paginate_by = 10
     template_name ='catalog/bookinstancelist_list.html'
     permission_required = 'catalog.can_mark_returned'
+
 
 class BookInstanceUpdateView(PermissionRequiredMixin, UpdateView):
     model = BookInstance
     fields = '__all__'
     context_object_name = 'inst'
-    success_url = 'books'
     permission_required = 'catalog.can_mark_returned'
     template_name = 'catalog/bookinstance_update.html'
 
-    def get_object(self): 
-        inst = get_object_or_404(Book, pk=self.kwargs['pk'])
-
-        return inst
+    def get_success_url(self):
+        return reverse('book-detail', kwargs={'pk': self.object.book.pk})

@@ -1,16 +1,19 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>List of updateable books</h1>
-  {% if book_list %}
-  <ul>
-    {% for book in book_list %}
-      <li>
-        <a href="{% url 'book_instance_update' book.pk %}">{{ book.title }}</a> ({{book.author}})
+    <h1>List of updateable books</h1>
+
+    {% if bookinstance_list %}
+    <ul>
+
+      {% for bookinst in bookinstance_list %} 
+      <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+        <a href="{% url 'book_instance_update' bookinst.id %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }}) {% if user.is_staff %}- {{ bookinst.borrower }}{% endif %} {% if perms.catalog.can_mark_returned %}- <a href="{% url 'renew-book-librarian' bookinst.id %}">Renew</a>  {% endif %}
       </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <p>There are no books in the library.</p>
-  {% endif %}       
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>There are no updateable books.</p>
+    {% endif %}       
 {% endblock %}
